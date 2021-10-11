@@ -39,3 +39,21 @@
   ![Queuing](https://wiki.tino.org/wp-content/uploads/2021/07/word-image-1414.png)
 - **Publish-subscribe** sẽ tiếp cận cùng lúc nhiều subscribe và các message sẽ được gửi đến nhiều subscribe, không thể sử dụng để phân tán công việc cho nhiều worker.
   ![Publish-subcribe](https://wiki.tino.org/wp-content/uploads/2021/07/word-image-1415.png)
+
+
+### SOCKETCLUSTER 
+
+- Là một mã nguồn mở, một framework real-time cho node.js
+- Support cả giao tiếp giữa client với server, một nhóm thông qua sơ chế pub/sub channel.[tạo ra 1 kênh riêng để các phần tử trong 1 nhóm gia tiếp với nhau]
+
+- SocketCluster được thiết kế để dễ dàng mở rộng số processes/host khi xây dựng hệ thống.
+- Ví dụ hiện tại bạn chỉ có 1 con server Node.js để nhận và xử lý request, nhưng sau đấy số lượng request nhiều nên, 1 server không thể đáp ứng, ta sẽ dùng SocketCluster để gán thêm 1 con server y hệt như thế vào hệ thống nhằm giảm tải áp lực cho hệ thống
+
+### Một số khái niệm trọng SocketCluster
+
+- **Worker**: là đối tượng thực thi các chức năng của server, một server sockecluster có thể có nhiều thể hiện worker giúp giải quyết vấn đề single I/O của NODE.JS. 
+- Ví dụ máy bạn có 2 CPU thì có thể tạo 2 thể hiện workder, khi có 2 request đồng thời thì nó sẽ chia ra và được xử lý bởi 2 worker trong cùng 1 lúc.
+- **Broker** : đối tượng chịu trách nhiệm giao tiếp giữa các worker 
+- **SocketCluster/SocketClient**: là đối tượng tạo kết nối socket, cho phép giao tiếp với server 1 cách real-time
+- **Channel** : Kênh giao tiếp.  
+- Ví dụ trong ứng dụng chat thì mỗi room chat sẽ là 1 channel, khi một client gửi tin nhắn vào room (publish) thì chỉ có những client đang trong room đó (subscribe) mới nhận được tin nhắn, còn các client ở trong channel/room khác thì ko nhận được.
